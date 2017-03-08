@@ -5,24 +5,24 @@ Linear mixed Models
 -------------------
 
 Mixed models are a form of regression model, meaning that the goal is
-to relate one _dependent variable_ (outcome, response) to one or more
-_independent variables_ (predictors, covariates, regressors).  Mixed
-models are typically used when there is some statistical dependence
-among the observations (more basic regression procedures like least
-squares regression and GLM take the observations to be uncorrelated or
-independent of each other).
+to relate one _dependent variable_ (outcome, or response) to one or
+more _independent variables_ (predictors, covariates, or regressors).
+Mixed models are typically used when there may be statistical
+dependence among the observations.  More basic regression procedures
+like least squares regression and GLM take the observations to be
+uncorrelated or independent of each other.
 
 Mean and variance structure
 ---------------------------
 
-Many regression models can be interpreted in terms of their models for
-the _mean structure_ and the _variance structure_.  The mean structure
-can be written as E[Y|X], read as "the mean of Y given X".  If your
-dependent variable is a person's income, and the predictors are their
-age, number of years of schooling, and gender, you might model the
-mean structure as
+Many regression models can be interpreted in terms of the way they
+specify the _mean structure_ and the _variance structure_.  The mean
+structure can be written as E[Y|X], read as "the mean of Y given X".
+If your dependent variable is a person's income, and the predictors
+are their age, number of years of schooling, and gender, you might
+model the mean structure as
 
-E[income | age, school, female] = b0 + b1*age + b2*school + b3*female
+E[income | age, school, female] = b0 + b1⋅age + b2⋅school + b3⋅female
 
 This is a _linear mean structure_, which is the mean structure used in
 linear regression (e.g. OLS), and in linear mixed models.  The
@@ -42,21 +42,21 @@ Dependent data
 --------------
 
 A common situation in applied research is that several observations
-are taken on a person.  These might be replicates of the same
-measurement taken at one time (i.e. triplicate blood pressure
+are made on a person.  These might be replicates of the same
+measurement taken at one time (e.g. triplicate blood pressure
 measurements), longitudinal measurements of the same trait taken over
-time (annual BMI measurements taken over several years), or related
-traits measured at the same or different times (hearing level in the
-left and right ear).  When data are collected this way, it is likely
-that the measures for a single person are correlated.
+time (e.g. annual BMI measurements taken over several years), or
+related traits measured at the same or different times (e.g. hearing
+level in the left and right ear).  When data are collected this way,
+it is likely that the measures for a single person are correlated.
 
-Dependent data often arise due to taking repeated measurements on each
+Dependent data often arise when taking repeated measurements on each
 person, but other grouping variables are also possible.  For example,
 we may have test scores on students in a classroom, with the classroom
 nested in a school, which in turn is nested in a school district, etc.
-The generic terms _cluster_ or _grouping variable_ are often used to
-refer to whatever is the main unit of analysis on which the repeated
-measures are made.
+The generic terms _cluster variable_ or _grouping variable_ are often
+used to refer to whatever is the main unit of analysis on which the
+repeated measures are made.
 
 There are various ways to accommodate correlations in a regression
 framework.  The approach taken in mixed modeling is that the
