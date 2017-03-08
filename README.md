@@ -326,3 +326,33 @@ present the Python code generally runs somewhat slower than LMER.
 There are many innovations underway to accelerate numerical Python
 code so it is likely that the Statsmodels code will become faster over
 time.
+
+Other practicalities
+--------------------
+
+To fit a mixed model to data using Python Statsmodels (or most other
+software tools), it should be in "long format".  This means that there
+is one row of data for each observed outcome (not for each group).  If
+the data are originally represented in wide format, like this
+
+```
+Subject   Time1Y  Time2Y  Time1X   Time2X
+1         34      39      12        9
+2         31      27      19       15
+...
+```
+
+then it should be restructured to long form:
+
+```
+Subject   Time    Y     X
+1         1       34    12
+1         1       39     9
+2         2       31    19
+2         2       27    15
+...
+```
+
+There are various tools for doing this in Python, including many
+powerful data manipulation routines in the
+[Pandas](http://pandas.pydata.org) library.
