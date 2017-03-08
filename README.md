@@ -20,10 +20,10 @@ model, mixed effects model, multilevel model, hierarchical model,
 random effects model, variance components model.
 
 __Alternatives and related approaches:__ Here we focus on using mixed
-linear models to capture dependencies among data values.  Other
-approaches include generalized least squares (GLS), generalized
-estimating equations (GEE), fixed effects regression, and marginal
-regression.
+linear models to capture structural trends and statistical
+dependencies among data values.  Other approaches with related goals
+include generalized least squares (GLS), generalized estimating
+equations (GEE), fixed effects regression, and marginal regression.
 
 __Nonlinear mixed models:__ Here we only consider linear mixed models.
 Generalized linear and non-linear mixed effects models also exist, but
@@ -33,11 +33,12 @@ Mean and variance structure
 ---------------------------
 
 Many regression approaches can be interpreted in terms of the way that
-they specify the _mean structure_ and the _variance structure_.  The
-mean structure can be written as E[Y|X], read as "the mean of Y given
-X".  For example, if your dependent variable is a person's income, and
-the predictors are their age, number of years of schooling, and
-gender, you might model the mean structure as
+they specify the _mean structure_ and the _variance structure_ of the
+population being modeled.  The mean structure can be written as
+E[Y|X], read as "the mean of Y given X".  For example, if your
+dependent variable is a person's income, and the predictors are their
+age, number of years of schooling, and gender, you might model the
+mean structure as
 
 E[income | age, school, female] = b0 + b1⋅age + b2⋅school + b3⋅female.
 
@@ -45,9 +46,9 @@ This is a _linear mean structure_, which is the mean structure used in
 linear regression (e.g. OLS), and in linear mixed models.  The
 _parameters_ b0, b1, b2, and b3 are unknown constants to be fit to the
 data.  The term "linear" here refers to the fact that the mean
-structure is linear in the parameters (b0, b1, b2, b3).  It is not
-necessary for the mean structure to be linear in the data, e.g. we
-could have specified the mean structure as
+structure is linear in the parameters (b0, b1, b2, b3).  Note that it
+is not necessary for the mean structure to be linear in the data,
+e.g. we could have specified the mean structure as
 
 E[income | age, school, female] = b0 + b1⋅age + b2⋅age^2 + b3⋅school + b4⋅female
 
@@ -60,10 +61,10 @@ Var[income | age, school, female] = v,
 
 where v is an unkown constant to be fit to the data.
 
-In the context of mixed models, the mean and variance and variance
-structures defined here are often referred to as the _marginal mean
-structure_ and _marginal variance structure_, for reasons that will be
-explained further below.
+In the context of mixed models, the mean and variance structures
+defined here are often referred to as the _marginal mean structure_
+and _marginal variance structure_, for reasons that will be explained
+further below.
 
 Dependent data
 --------------
@@ -75,8 +76,8 @@ pressure measurements), longitudinal measurements of the same trait
 taken over time (e.g. annual BMI measurements taken over several
 years), or related traits measured at the same or different times
 (e.g. hearing levels in the left and right ear).  When data are
-collected this way, it is likely that the measures for a single person
-are correlated.
+collected this way, it is likely that the measures within a single
+person are correlated.
 
 Dependent data often arise when taking repeated measurements on each
 person, but other grouping variables are also possible.  For example,
@@ -92,7 +93,7 @@ measures are made (people, classrooms, etc.).
 Longitudinal data and random coefficients
 -----------------------------------------
 
-There are various ways to accommodate correlations in a regression
+There are various ways to accommodate correlations within a regression
 framework.  In mixed modeling, the parameters in the regression model
 are taken to vary from one cluster to the next.  For example, if we
 have repeated measures of blood pressure and age over time within a
@@ -169,16 +170,16 @@ S[Michigan] = -1.  This means that people in Burns Park tend to have 1
 unit higher BMI than other people in Ann Arbor, people in Ann Arbor
 have 2 units higher BMI than other people in Michigan, and people in
 Michigan have one unit lower BMI than people in other states.  These
-terms combine additively, so that subject i has conditional mean value
-m + 1 + 2 - 1 = m+2.
+terms are statistically independent and combine additively, so that
+subject i has conditional mean value m + 1 + 2 - 1 = m+2.
 
 In variance components modeling, we don't care much about the specific
 random terms associated with each level of each variable.  Instead, we
 imagine that all the N[] terms come from a common distribution, say
-with mean 0 and variance V_N, all the C[] terms come from a
-distribution with mean 0 and variance V_C, and all the S[] terms come
-from a distribution with mean 0 and variance V_S.  Our only goal here
-is to estimate V_N, V_C, and V_S, to better understand how the
+with mean 0 and variance v_N, all the C[] terms come from a
+distribution with mean 0 and variance v_C, and all the S[] terms come
+from a distribution with mean 0 and variance v_S.  Our only goal here
+is to estimate v_N, v_C, and v_S, to better understand how the
 different levels of geography contribute to the observed value of BMI.
 
 Crossed variance components
@@ -200,7 +201,7 @@ j.  The random effect A[i] reflects person i's propensity to send
 emails, and B[j] represents person j's propensity to receive emails.
 These random effects are crossed, meaning that any of the A[] terms
 can occur in combination with any of the B[] terms.  As above, we are
-mainly interested in the variance parameters V_a and V_b, describing,
+mainly interested in the variance parameters v_a and v_b, describing,
 respectively, the variation in the population of email sending and
 email receiving propensities.
 
@@ -209,29 +210,29 @@ More general model formulations
 
 Above we gave examples of longitudinal, purely nested, and purely
 crossed mixed models.  In general, a mixed model can have any
-combination of terms of various types (hence the term "mixed" which
-may refer to the presence of fixed effects and random effects in the
-same model, although this term may also refer to the technical fact
-that the marginal distributions in a mixed model can be represented as
-infinite mixtures).
-
-The notion of a mixed model is very broad and there is no formal
-definition of exactly what scope of models falls into this class.
-Certain types of time series models, spatial-temporal models, and
-structural-equation models can be viewed as mixed models.
+combination of terms of various types.  The notion of a mixed model is
+very broad and there is no formal definition of exactly what scope of
+models falls into this class.  Certain types of time series models,
+spatial-temporal models, and structural-equation models can be viewed
+as mixed models, but may not be able to be fit using standard mixed
+modeling software tools.
 
 Parameters and random effects
 -----------------------------
 
-Python Statsmodels uses maximum likelihood (or restricted maximum
-likelihood, the difference is not important here) to fit mixed models
-to data.  This means that we are optimizing the parameter values in a
-class of parametric models to best fit the data.  The random effects,
-e.g. a(i) or N[] above, are random but not observed.  We therefore
-marginalize them out of the model's likelihood function before fitting
-to the data.  This means that the fitting process does not directly
-involve these random effects, although it does involve the parameters
-defining the distribution of random effects.
+Like the widely-used routines in R, Stata, and SAS, Python Statsmodels
+uses maximum likelihood to fit mixed models to data.  (Technically,
+the default estimator is restricted maximum likelihood, but the
+difference is not important here).  This means that we are optimizing
+the parameter values in a class of parametric models to best fit the
+data.  The random effects, e.g. random intercepts a(i) or N[] in the
+examples discussed above, are random variables, not parameters, but
+unlike the data (which are also treated as random variables), the
+random effects are not observed.  We therefore marginalize the random
+effects out of the model's likelihood function before fitting to the
+data.  This means that the fitting process does not directly involve
+these random effects, although it does involve the parameters defining
+their distribution.
 
 The parameters in a mixed model can broadly be considered as being one
 of the following types:
@@ -250,21 +251,29 @@ effects are correlated.  These are structural parameters describing
 how the random effects are distributed, not the random effects
 themselves.
 
+Since the random effects are not parameters, they are not estimated
+(this is a good thing).  However it is possible to predict the value
+of a random effect after fitting a model.  There are various ways to
+do this, but the most common approach uses a "Best Linear Unbiased
+Predictor" (BLUP).  There is also some controversy over how to
+interpret these predictions, and how to do statistical inference with
+them.
+
 In the longitudinal mixed model
 
 E[SBP(age, i) | a(i), b(i)] = a + b⋅age + a(i) + b(i)⋅age(i)
 
-a and b are mean structure parameters (fixed effects), and V_a, V_b,
-and C_ab are variance structure parameters, along with the "error
-variance" V[SBP(age, i) | a(i), b(i)].  The a(i) and b(i) are the
-actual random effects.
+where a and b are mean structure parameters (fixed effects), and v_a,
+v_b, c_ab, and the "error variance" V[SBP(age, i) | a(i), b(i)] are
+variance structure parameters.  The a(i) and b(i) are the actual
+random effects.
 
 In the nested variance components model
 
 Y(i) = m + N[n(i)] + C[c(i)] + S[s(i)] + e(i)
 
 the only mean structure parameter is m.  The variance structure
-parameters are V_n, V_c, V_s, and the error variance (in a variance
+parameters are v_n, v_c, v_s, and the error variance (in a variance
 components model the random effects are independent within and between
 levels, so there are no covariance parameters).
 
@@ -273,7 +282,7 @@ In the crossed variance components model
 Y(i,j) = m + A[i] + B[j] + e(i, j),
 
 the mean structure parameter is m, and the variance structure
-parameters are V_a, V_b, and the error variance (again there are no
+parameters are v_a, v_b, and the error variance (again there are no
 covariance parameters).
 
 Software and algorithms
@@ -285,19 +294,20 @@ approaches such as OLS and GLM.  However a series of developments in
 the past 20 years has led to algorithms that are reasonably fast and
 stable.  Statsmodels utilizes many of these best practices, such as
 internally re-parameterizing the covariance parameters through their
-Choleky factor, and profiling out certain parameters during the
+Cholesky factor, and profiling out certain parameters during the
 estimation process.
 
-The earlier specifications of linear models were explicitly
-group-based.  This means that there was some grouping variable such as
-a person, such that observations made on different groups are taken to
-be independent.  Many applications of mixed modeling are compatible
-with this group-based approach.  One exception is heavily crossed
-models that are widely used in, for example, experimental psychology
-and linguistics.
+The earlier specifications of linear models (e.g. Laird and Ware 1982)
+were explicitly group-based.  This means that there was a grouping
+variable such as a person, such that observations made on different
+groups are taken to be independent.  Many applications of mixed
+modeling are compatible with this group-based approach.  However
+heavily crossed models that are widely used in, for example,
+experimental psychology and linguistics are not.
 
 Recent versions of R's LMER have taken a somewhat different
-algorithmic approach, utilizing the "sparse Cholesky factorization".
+algorithmic approach, utilizing the [sparse Cholesky
+factorization](http://faculty.cse.tamu.edu/davis/welcome.html).
 Statsmodels does not use this approach, partly because the sparse
 Cholesky code is not available with a Python-compatible license.  The
 sparse Chleksy approach may be somewhat more efficient for handling
