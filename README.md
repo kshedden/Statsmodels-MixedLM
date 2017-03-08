@@ -162,7 +162,7 @@ different levels of geography contribute to the observed value of BMI.
 Crossed variance components
 ---------------------------
 
-Variance components can also be crossed.  Fitting this typs of model
+Variance components can also be crossed.  Fitting this type of model
 puts more stress on the software, but it can be done if there aren't
 too many levels of crossing.  Suppose for example that we have the
 number of emails sent among people in a sample.  For simplicity, we
@@ -171,13 +171,13 @@ mixed models.  We can imagine that each person has a propensity A[] to
 send emails, and also a propensity B[] to receive emails.  A simple
 additive variance component would be
 
-Y[i,j] = A[i] + B[j] + e(i, j),
+Y(i,j) = A[i] + B[j] + e(i, j),
 
-where Y[i, j] is the number of emails sent from subject i to subject
+where Y(i, j) is the number of emails sent from subject i to subject
 j.  The random effect A[i] reflects person i's propensity to send
 emails, and B[j] represents person j's propensity to receive emails.
 These random effects are crossed, meaning that any of the A[] terms
 can occur in combination with any of the B[] terms.  As above, we are
 mainly interested in the variance parameters V_a and V_b, describing,
 respectively, the variation in the population of email sending
-propensity and email receiving propensities.
+propensities and email receiving propensities.
