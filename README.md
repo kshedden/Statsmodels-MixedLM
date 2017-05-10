@@ -179,15 +179,19 @@ Cov[Y(i, s), Y(i, t)] = v_a + c_ab(s + t) + v_b*s*t.
 If the three time points are coded t=-1, 0, 1, we can more explicitly
 write the marginal mean as
 
+```
 ( a - b )
 ( a     )
 ( a + b )
+```
 
 and the covariance as
 
+```
 ( v_a + v_b - 2*c_ab + s^2   v_a - c_ab       v_a - v_b                )
 ( v_a - c_ab                 v_a + s^2        v_a + c_ab               )
 ( v_a - v_b                  v_a + c_ab       v_a + v_b + 2*c_ab + s^2 )
+```
 
 Nested variance components
 --------------------------
@@ -263,10 +267,11 @@ third person lives in a different state), and they live in cities C1,
 C1, C2 and neighborhoods N1, N2, N3.  Then the marginal covariance
 matrix for these three people is:
 
+```
 ( v_N + v_C + v_S + s^2  v_C + v_S              0                     )
 ( v_C + v_S              v_N + v_C + v_S + s^2  0                     )
 ( 0                      0                      v_N + v_C + v_S + s^2 )
-
+```
 
 Crossed variance components
 ---------------------------
